@@ -8,7 +8,13 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import org.junit.Test;
 
-
+/**
+ * Unit tests around the ScoreManager Tests login/postScore/getHighscore..
+ * 
+ * @author Ross Andreucetti
+ * @since 25 Nov 2014
+ *
+ */
 public class ScoreManagerTest {
 	@Test
 	public void testLogin() {
@@ -20,10 +26,11 @@ public class ScoreManagerTest {
 	}
 
 	@Test
-	public void testPostScoreEmpty(){
+	public void testPostScoreEmpty() {
 		ScoreManager manager = new ScoreManager(false);
 		manager.postScore(1234, "ABCDEFG", 50000);
-		assertNull(manager.getLevels().get(1234));	//level should not have been created as sessionKey is not valid
+		// level should not have beencreated as sessionKey is not valid
+		assertNull(manager.getLevels().get(1234)); 
 	}
 
 	@Test
@@ -33,8 +40,7 @@ public class ScoreManagerTest {
 		users.put(23423, user);
 		ConcurrentHashMap<String, User> activeSessions = new ConcurrentHashMap<String, User>();
 		activeSessions.put("ABCDEFG", user);
-		ScoreManager manager = new ScoreManager(users, activeSessions,
-				new ConcurrentHashMap<Integer, Level>());
+		ScoreManager manager = new ScoreManager(users, activeSessions, new ConcurrentHashMap<Integer, Level>());
 		manager.postScore(1234, "ABCDEFG", 50000);
 		assertTrue(manager.getLevels().get(1234).getSize() == 1);
 	}
@@ -68,7 +74,6 @@ public class ScoreManagerTest {
 		String highScores = manager.getHighScore(1234);
 		assertTrue(manager.getLevels().get(1234).getSize() == 15);
 		assertNotNull(highScores);
-
 
 	}
 }

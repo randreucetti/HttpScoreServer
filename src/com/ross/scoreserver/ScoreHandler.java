@@ -9,6 +9,15 @@ import java.io.OutputStream;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
+/**
+ * ScoreHandler class handles incoming HTTP request and sends them to the
+ * manager using the appropriate function. Bad URLs and invalid parameters are
+ * also checked here
+ * 
+ * @author Ross Andreucetti
+ * @since 25 Nov 2014
+ *
+ */
 public class ScoreHandler implements HttpHandler {
 
 	private ScoreManager manager;
@@ -17,13 +26,17 @@ public class ScoreHandler implements HttpHandler {
 		super();
 		manager = new ScoreManager(threadedCleanup);
 	}
-	
+
 	public ScoreHandler(ScoreManager manager) {
 		super();
 		this.manager = manager;
-		
+
 	}
 
+	/**
+	 * Used for processing incoming HTTP requests REGEXs are used to validate
+	 * URLs
+	 */
 	@Override
 	public void handle(HttpExchange t) throws IOException {
 		String request = t.getRequestURI().toString();
@@ -42,6 +55,13 @@ public class ScoreHandler implements HttpHandler {
 		}
 	}
 
+	/**
+	 * Handles login mechancism
+	 * 
+	 * @param t
+	 * @param uri
+	 * @throws IOException
+	 */
 	private void handleLogin(HttpExchange t, String uri) throws IOException {
 		int userId = Integer.parseInt(uri.split("/")[1]);
 		String response = manager.login(userId);
@@ -51,6 +71,13 @@ public class ScoreHandler implements HttpHandler {
 		os.close();
 	}
 
+	/**
+	 * Handles post score mechanism
+	 * 
+	 * @param t
+	 * @param uri
+	 * @throws IOException
+	 */
 	private void handlePostScore(HttpExchange t, String uri) throws IOException {
 		String param = t.getRequestURI().getQuery();
 		int levelId = Integer.parseInt(uri.split("/")[1]);
@@ -59,11 +86,16 @@ public class ScoreHandler implements HttpHandler {
 		BufferedReader in = new BufferedReader(new InputStreamReader(is));
 		int score = Integer.parseInt(in.readLine());
 		manager.postScore(levelId, sessionKey, score);
-
 	}
 
-	private void handleGetHighScore(HttpExchange t, String uri)
-			throws IOException {
+	/**
+	 * Handles high score retrieval
+	 * 
+	 * @param t
+	 * @param uri
+	 * @throws IOException
+	 */
+	private void handleGetHighScore(HttpExchange t, String uri) throws IOException {
 		int levelId = Integer.parseInt(uri.split("/")[1]);
 		String response = manager.getHighScore(levelId);
 		t.sendResponseHeaders(200, response.length());

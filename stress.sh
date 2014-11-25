@@ -1,4 +1,5 @@
-for i in {1..100000}
+for i in {1..10000}
 do
-	curl -s localhost:8000/$i/login &
+num=$(($RANDOM%1000))
+	curl -s localhost:8000/$num/login &
 done
