@@ -1,18 +1,13 @@
 package com.ross.scoreserver;
 
-public class Score implements Comparable<Score> {
-	int score;
+public class Score {
 	int userId;
+	int score;
 	
-	public Score(int score, int userId) {
+	public Score(int userId, int score) {
 		super();
 		this.score = score;
 		this.userId = userId;
-	}
-	
-	@Override
-	public int compareTo(Score o) {
-		return (o.score - score);
 	}
 
 	@Override

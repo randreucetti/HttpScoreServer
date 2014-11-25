@@ -5,7 +5,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class Level {
-	List<Score> scores;
+	private List<Score> scores;
 
 	public Level() {
 		scores = Collections.synchronizedList(new LinkedList<Score>());
@@ -54,5 +54,9 @@ public class Level {
 				highScores.append(",");
 		}
 		return highScores.toString();
+	}
+	
+	public int getSize(){
+		return scores.size();
 	}
 }
